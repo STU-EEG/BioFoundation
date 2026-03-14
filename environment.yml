@@ -1,0 +1,14 @@
+name: femba
+channels:
+  - conda-forge
+  - pytorch
+dependencies:
+  - huggingface_hub
+  - jupyter
+  - pandas
+  - pip
+  - python=3.10
+  - pytorch
+  - safetensors
+  - pip:
+    - mamba-ssm
