@@ -20,7 +20,7 @@
 
 import torch
 import torch.nn as nn
-from typing import Optional, Tuple
+from typing import Optional, Tuple, override
 from mamba_ssm import Mamba
 
 
@@ -284,3 +284,23 @@ class FEMBA(nn.Module):
         else:
             x_reconstructed = self.decoder(x)
             return x_reconstructed, x_original
+
+class FembaEncoder(FEMBA):
+    def __init__(self, seq_length: int = 1280, num_channels: int = 22, kernel_1: int = 64, kernel_dec: Tuple[int, int] = (31, 31), exp: int = 4, patch_size: Tuple[int, int] = (2, 16), stride: Tuple[int, int] = (2, 16), embed_dim: int = 79, num_blocks: int = 1):
+        super().__init__(seq_length, num_channels, num_classes=0, kernel_1=kernel_1, kernel_dec=kernel_dec, exp=exp, patch_size=patch_size, stride=stride, embed_dim=embed_dim, num_blocks=num_blocks, classification_type="bc")
+
+    
+    @override
+    def forward(self, x, mask):
+        x_masked = x.clone()
+        x_masked[mask] = 0
+        x = self.patch_embed(x_masked)
+        x = x + self.pos_embed
+
+        for mamba_block, norm_layer in zip(self.mamba_blocks, self.norm_layers):
+            res = x
+            x = mamba_block(x)
+            x = res + x
+            x = norm_layer(x)
+        
+        return x
