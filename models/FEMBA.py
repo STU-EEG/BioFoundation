@@ -20,7 +20,7 @@
 
 import torch
 import torch.nn as nn
-from typing import Optional, Tuple, override
+from typing import Optional, Tuple
 from mamba_ssm import Mamba
 
 
@@ -290,7 +290,6 @@ class FembaEncoder(FEMBA):
         super().__init__(seq_length, num_channels, num_classes=0, kernel_1=kernel_1, kernel_dec=kernel_dec, exp=exp, patch_size=patch_size, stride=stride, embed_dim=embed_dim, num_blocks=num_blocks, classification_type="bc")
 
     
-    @override
     def forward(self, x, mask):
         x_masked = x.clone()
         x_masked[mask] = 0
