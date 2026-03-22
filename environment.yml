@@ -5,7 +5,6 @@ channels:
 dependencies:
   - huggingface_hub
   - jupyter
-  - mne
   - pandas
   - pip
   - python=3.10
@@ -13,3 +12,4 @@ dependencies:
   - safetensors
   - pip:
     - mamba-ssm
+    - mne
