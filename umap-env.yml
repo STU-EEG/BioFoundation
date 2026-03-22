@@ -1,0 +1,10 @@
+name: umap
+channels:
+  - conda-forge
+dependencies:
+  - jupyter
+  - numpy
+  - matplotlib
+  - pandas
+  - scipy
+  - umap-learn
